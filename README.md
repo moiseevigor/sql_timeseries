@@ -63,9 +63,19 @@ Run tests
 docker-compose up app
 ```
 
+## Problem statement 
+
+Time series data are quite common in many applications. Some of them are logging, time series events from sensors in IoT, time series data on stock market etc.
+
+Assumptions:
+
+1. Table accepting inserts at regular intervals with some minor jitter
+2. Zero or no updates are effected on inserted records
+3. 
+
 ## Results
 
-### Sequential run 
+### Experiment 1: Sequential run 
 Insert was emitted as separate statement, not batching
 
 ```
@@ -73,5 +83,20 @@ Insert was emitted as separate statement, not batching
 # app_1  | The insert of 500K elements: 504.2107125670009
 ```
 
+Sizes
+
+```
+log_1: "63 MB"
+idx_created_at: "19 MB"
+```
+
 Approx inserting at 1K records per sec.
 
+### Experiment 2: Sequential run disable index
+
+See https://fle.github.io/temporarily-disable-all-indexes-of-a-postgresql-table.html
+
+
+### Experiment 3: Batching
+
+### Experiment 4: Types of indexes on datetime 
