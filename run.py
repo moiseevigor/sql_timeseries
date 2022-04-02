@@ -6,9 +6,11 @@ from sqlalchemy.dialects.postgresql import UUID
 import uuid
 from sqlalchemy.sql import text
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from pytz import timezone
+import timeit
 UTC = timezone('UTC')
+
 
 engine = create_engine('postgresql://tsuser:example@db:5432/timeseries')
 
@@ -22,20 +24,29 @@ engine = create_engine('postgresql://tsuser:example@db:5432/timeseries')
 # metadata.create_all(engine)
 
 # datetime.datetime(2022, 4, 2, 20, 38, 28, 964690, tzinfo=<UTC>)
+# datetime.now(UTC)
 
 with engine.connect() as con:
-    data = ( 
-        { "uuid": uuid.uuid1(), "created_at": datetime.now(UTC), "text": "11111" },
-        { "uuid": uuid.uuid1(), "created_at": datetime.now(UTC), "text": "22222" },
-    )
+    timebench = timeit.default_timer()
+    data = []
+    for i in range(0, 500000):
+        data.append({ 
+            "uuid": uuid.uuid1(), 
+            "created_at": datetime(2022, 4, 1, 20, 38, 28, 964690, tzinfo=UTC) + timedelta(seconds=i*60), 
+            "text": i 
+        })
+    print(f"The create array 500K elements:", timeit.default_timer() - timebench)
 
-    statement = text("""INSERT INTO log_1(uuid, created_at, text) VALUES(:uuid, :created_at, :text)""")
-
+    timebench = timeit.default_timer()
+    statement = text("""INSERT INTO log_1(uuid, created_at, text) VALUES (:uuid, :created_at, :text)""")
     for line in data:
         con.execute(statement, **line)
 
-with engine.connect() as con:
-    rs = con.execute('SELECT * FROM log_1')
+    print(f"The insert of 500K elements:", timeit.default_timer() - timebench)
 
-    for row in rs:
-        print(row)
+
+# with engine.connect() as con:
+#     rs = con.execute("SELECT * FROM public.log_1 WHERE created_at < CURRENT_TIMESTAMP - '2 MINUTES'::interval")
+
+#     for row in rs:
+#         print(row)

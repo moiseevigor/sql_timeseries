@@ -63,3 +63,15 @@ Run tests
 docker-compose up app
 ```
 
+## Results
+
+### Sequential run 
+Insert was emitted as separate statement, not batching
+
+```
+# app_1  | The create array 500K elements: 7.245429991999117
+# app_1  | The insert of 500K elements: 504.2107125670009
+```
+
+Approx inserting at 1K records per sec.
+
