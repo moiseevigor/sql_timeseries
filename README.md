@@ -104,3 +104,12 @@ See https://fle.github.io/temporarily-disable-all-indexes-of-a-postgresql-table.
 ### Experiment 3: Batching
 
 ### Experiment 4: Types of indexes on datetime 
+
+## Benchmarking
+
+```
+pgbench --no-vacuum --host=0.0.0.0 --user=tsuser --time=10 \
+       --report-latencies \
+       --progress=10 \
+       --client=64 --jobs=8 timeseries -f benchmarks/1.sql 
+```

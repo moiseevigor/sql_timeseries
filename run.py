@@ -29,6 +29,11 @@ logs = Table('log_1', metadata,
 ###########################################################################
 ## Experiment 1
 # with engine.connect() as con:
+#     log_types = []
+#     res_log_types = con.execute("select * from log_types");
+#     for res in res_log_types:
+#         log_types.append(res);
+#
 #     timebench = timeit.default_timer()
 #     data = []
 #     for i in range(0, 500000):
@@ -49,20 +54,35 @@ logs = Table('log_1', metadata,
 
 
 ###########################################################################
-## Experiment 2, 500K in 170sec
+## Experiment 2: The batch insert of 500K elements: 175.64663429999928 sec
 with engine.connect() as con: 
-    log_types = []
-    res_log_types = con.execute("select * from log_types");
-    for res in res_log_types:
-        log_types.append(res);
+    # log_types = []
+    # res_log_types = con.execute("select * from log_types");
+    # for res in res_log_types:
+    #     log_types.append(res);
 
     timebench = timeit.default_timer()
+    len_log_types = 200
+    log_types = []
+    for i in range(0, len_log_types):
+        log_types.append({ 
+            "uuid": uuid.uuid1(), 
+            "created_at": datetime(2022, 4, 1, 20, 38, 28, 964690, tzinfo=UTC), 
+            "text": i 
+        })
+    print(f"The create array 200 elements:", timeit.default_timer() - timebench)
+    statement = text("""INSERT INTO log_types(uuid, created_at, text) VALUES (:uuid, :created_at, :text)""")
+    con.execute(statement, log_types)
+
+
+    timebench = timeit.default_timer()
+    len_logs = 500000
     data = []
-    for i in range(0, 5000):
+    for i in range(0, len_logs):
         data.append({ 
             "uuid": uuid.uuid1(), 
-            "type_uuid": log_types[int(random.random()*4)]['uuid'], 
-            "created_at": datetime(2022, 4, 1, 20, 38, 28, 964690, tzinfo=UTC) + timedelta(seconds=i*60), 
+            "type_uuid": log_types[int(random.random()*len_log_types)]['uuid'], 
+            "created_at": datetime(2022, 4, 1, 20, 38, 28, 964690, tzinfo=UTC) + timedelta(seconds=i*1/6+random.random()), 
             "text": i 
         })
     print(f"The create array 500K elements:", timeit.default_timer() - timebench)

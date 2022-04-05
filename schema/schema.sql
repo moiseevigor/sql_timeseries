@@ -79,6 +79,15 @@ CREATE INDEX IF NOT EXISTS idx_created_at
     (created_at DESC NULLS FIRST)
     TABLESPACE pg_default;
 
+-- Index: idx_type_uuid_created_at
+
+-- DROP INDEX IF EXISTS public.idx_type_uuid_created_at;
+
+CREATE INDEX IF NOT EXISTS idx_type_uuid_created_at
+    ON public.log_1 USING btree
+    (type_uuid ASC NULLS LAST, created_at DESC NULLS FIRST)
+    TABLESPACE pg_default;
+
 -- Constraint: fk_type_uuid
 
 ALTER TABLE IF EXISTS public.log_1 DROP CONSTRAINT IF EXISTS fk_type_uuid;
@@ -92,8 +101,10 @@ ALTER TABLE IF EXISTS public.log_1
 
 -- populate log_types
 
+/*
 INSERT INTO public.log_types VALUES
     ('7a4721b0-b4d3-11ec-a28a-0242ac110002', CURRENT_TIMESTAMP, 'type 1'),
     ('9140eca2-b4d3-11ec-a28a-0242ac110002', CURRENT_TIMESTAMP, 'type 2'),
     ('97957e9c-b4d3-11ec-a28a-0242ac110002', CURRENT_TIMESTAMP, 'type 3'),
     ('9d7014e4-b4d3-11ec-a28a-0242ac110002', CURRENT_TIMESTAMP, 'type 4');
+*/
