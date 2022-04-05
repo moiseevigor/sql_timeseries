@@ -90,8 +90,17 @@ Insert was emitted as separate statement, not batching
 Sizes
 
 ```
-log_1: "63 MB"
-idx_created_at: "19 MB"
+SELECT count(*) FROM public.log_1
+500K
+
+SELECT pg_size_pretty (pg_total_relation_size('log_1'));
+105 MB
+
+SELECT pg_size_pretty (pg_total_relation_size('idx_created_at'));
+19 MB
+
+SELECT pg_size_pretty (pg_total_relation_size('idx_type_uuid_created_at'));
+34 MB
 ```
 
 Approx inserting at 1K records per sec.
@@ -104,6 +113,14 @@ See https://fle.github.io/temporarily-disable-all-indexes-of-a-postgresql-table.
 ### Experiment 3: Batching
 
 ### Experiment 4: Types of indexes on datetime 
+Two types of indexes `idx_created_at` and `idx_type_uuid_created_at`.
+
+Find a tradeoff between two indexes `idx_created_at` and `idx_type_uuid_created_at`. Seems that 
+
+1. `idx_created_at` performs better with less data, count <200K
+2. `idx_type_uuid_created_at` performs better for higher affected record count >500K.
+
+Noted fact `idx_type_uuid_created_at` was not picked when in `log_types` were 400 records.
 
 ## Benchmarking
 

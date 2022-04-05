@@ -1,4 +1,23 @@
-function experiment():
+###########################################################################
+## Experiment 1
+
+import sqlalchemy
+from sqlalchemy import create_engine
+from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey, DateTime
+from sqlalchemy import inspect
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
+from sqlalchemy.sql import text
+import random
+
+from datetime import datetime, timedelta
+from pytz import timezone
+import timeit
+UTC = timezone('UTC')
+
+def run():
+    engine = create_engine('postgresql://tsuser:example@db:5432/timeseries')
+
     with engine.connect() as con:
         timebench = timeit.default_timer()
         data = []
