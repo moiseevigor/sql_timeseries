@@ -75,6 +75,10 @@ Assumptions:
 
 ## Results
 
+- Measure index performance with number of records growth, compute time on random range search 
+- Random vs regular timestamps 
+
+
 ### Experiment 1: Sequential run 
 Insert was emitted as separate statement, not batching
 
