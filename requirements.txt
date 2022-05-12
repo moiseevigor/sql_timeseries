@@ -1,3 +1,6 @@
 SQLAlchemy
 psycopg2-binary
 pytz
+numpy
+scipy
+matplotlib

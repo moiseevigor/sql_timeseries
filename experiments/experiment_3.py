@@ -11,6 +11,7 @@ from sqlalchemy.dialects.postgresql import UUID
 import uuid
 from sqlalchemy.sql import text
 import random
+import numpy as np
 
 from datetime import datetime, timedelta
 from pytz import timezone
@@ -21,6 +22,11 @@ def run():
     engine = create_engine('postgresql://tsuser:example@db:5432/timeseries')
 
     with engine.connect() as con: 
+        benchmarks = {
+            'values': [],
+            'errors': []
+        }
+
         log_types = []
         len_log_types = 200
         res_log_types = con.execute("select * from log_types");
@@ -67,7 +73,7 @@ def run():
             print(f"Experiment 3: The batch insert of {len_logs} elements on iteration {m}: ", timeit.default_timer() - timebench)
 
             # LOOP 3: run range queries
-            benchmarks = []
+            run_benchmarks = []
             for n in range(0, 100):
                 # random_hour = random.randint(1,24) + random.random()
                 random_hour = 24
@@ -83,9 +89,14 @@ def run():
 
                 res_log_types.fetchall()
                 benchtime_ms = round((timeit.default_timer() - timebench)*1000)
-                benchmarks.append(benchtime_ms)
+                run_benchmarks.append(benchtime_ms)
                 print(f"Experiment 3: Select speed on iter. {m},\t rowcount {res_log_types.rowcount},\t {random_hour} HOURS,\t num records in table {len_logs*m}:\t", benchtime_ms, "ms")
-
+            
+            print(f"Experiment 3: Benchmarks Mean: ", np.array(run_benchmarks).mean(), "\t Std. error:", np.array(run_benchmarks).std())
+            benchmarks['values'].append(np.array(run_benchmarks).mean())
+            benchmarks['errors'].append(np.array(run_benchmarks).std())
+            
+        print("Benchmarks: ", benchmarks)
 
 
 
