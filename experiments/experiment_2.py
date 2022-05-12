@@ -30,13 +30,12 @@ def run():
         # for i in range(0, len_log_types):
         #     log_types.append({ 
         #         "uuid": uuid.uuid1(), 
-        #         "created_at": datetime(2021, 4, 1, 20, 38, 28, 964690, tzinfo=UTC), 
+        #         "created_at": datetime(2021, 5, 11, 16, 00, 00, 000000, tzinfo=UTC), 
         #         "text": i 
         #     })
-        # print(f"The create array 200 elements:", timeit.default_timer() - timebench)
+        # print(f"The create array {len_log_types} elements:", timeit.default_timer() - timebench)
         # statement = text("""INSERT INTO log_types(uuid, created_at, text) VALUES (:uuid, :created_at, :text)""")
         # con.execute(statement, log_types)
-        # exit()
 
         timebench = timeit.default_timer()
         len_logs = 500000
@@ -45,10 +44,10 @@ def run():
             data.append({ 
                 "uuid": uuid.uuid1(), 
                 "type_uuid": log_types[int(random.random()*len_log_types)]['uuid'], 
-                "created_at": datetime(2022, 4, 5, 17, 00, 00, 000000, tzinfo=UTC) + timedelta(seconds=i*1/6+random.random()), 
+                "created_at": datetime(2022, 5, 11, 17, 00, 00, 000000, tzinfo=UTC) + timedelta(seconds=i*1/6+random.random()), 
                 "text": i 
             })
-        print(f"The create array 500K elements:", timeit.default_timer() - timebench)
+        print(f"The create array {len_logs} elements:", timeit.default_timer() - timebench)
 
         timebench = timeit.default_timer()
         

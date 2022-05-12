@@ -12,9 +12,10 @@ from pytz import timezone
 import timeit
 UTC = timezone('UTC')
 
-from experiments import experiment_1, experiment_2
+from experiments import experiment_1, experiment_2, experiment_3
 # experiment_1.run()
-experiment_2.run()
+# experiment_2.run()
+experiment_3.run()
 
 exit()
 
