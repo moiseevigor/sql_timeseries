@@ -1,6 +1,11 @@
 # SQL Time series
 Experimentation of Time series in PostgreSQL.
 
+## Links
+
+https://dba.stackexchange.com/questions/319071/how-to-speed-up-single-column-date-range-query-in-postgres
+https://dba.stackexchange.com/questions/18300/can-spatial-index-help-a-range-order-by-limit-query/22500#22500
+
 ## Build & Run
 
 <!-- Build

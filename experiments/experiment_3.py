@@ -39,7 +39,7 @@ def run():
             for i in range(0, len_log_types):
                 log_types.append({ 
                     "uuid": uuid.uuid1(), 
-                    "created_at": datetime(2021, 5, 11, 16, 00, 00, 000000, tzinfo=UTC), 
+                    "created_at": datetime(2022, 12, 3, 16, 00, 00, 000000, tzinfo=UTC), 
                     "text": i 
                 })
             print(f"Create array {len_log_types} elements:", timeit.default_timer() - timebench)
@@ -55,7 +55,7 @@ def run():
             # timebench = timeit.default_timer()
             data = []
             for i in range(0, len_logs):
-                created_at = datetime(2022, 5, 11, 17, 00, 00, 000000, tzinfo=UTC) \
+                created_at = datetime(2022, 12, 3, 17, 00, 00, 000000, tzinfo=UTC) \
                         + timedelta(seconds=m*len_logs + i*1/6+random.random())
                 data.append({ 
                     "uuid": uuid.uuid1(), 
